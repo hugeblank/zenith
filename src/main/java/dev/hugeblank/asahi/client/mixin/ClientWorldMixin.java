@@ -5,7 +5,6 @@ import dev.hugeblank.asahi.client.TimeSmoother;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.GameRules;
