@@ -15,10 +15,10 @@ public abstract class ClientPlayNetworkHandlerMixin {
     
     @Shadow private ClientWorld world;
 
-    @Inject(at=@At(value="INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;setTime(J)V"), method="onWorldTimeUpdate(Lnet/minecraft/network/packet/s2c/play/WorldTimeUpdateS2CPacket;)V", cancellable = true)
+    @Inject(at=@At(value="INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;method_29089(J)V"), method="onWorldTimeUpdate(Lnet/minecraft/network/packet/s2c/play/WorldTimeUpdateS2CPacket;)V", cancellable = true)
     private void clearTickable(WorldTimeUpdateS2CPacket packet, CallbackInfo ci) {
         ((TimeSmoother) world).asahi$updateTimes(packet);
-        this.world.setTime(packet.getTime());
+        this.world.method_29089(packet.getTime());
         ci.cancel();
     }
 }

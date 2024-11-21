@@ -5,7 +5,6 @@ import dev.hugeblank.asahi.client.TimeSmoother;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.MutableWorldProperties;
@@ -25,21 +24,23 @@ public abstract class ClientWorldMixin extends World implements TimeSmoother {
     @Unique private double remainder = 0D;
 
     protected ClientWorldMixin(
-        MutableWorldProperties properties,
-        RegistryKey<World> registryManager,
-        RegistryEntry<DimensionType> registryEntry,
-        Supplier<Profiler> profiler,
-        boolean isClient,
-        boolean debugWorld,
-        long seed
+            MutableWorldProperties mutableWorldProperties,
+            RegistryKey<World> registryKey,
+            RegistryKey<DimensionType> registryKey2,
+            DimensionType dimensionType,
+            Supplier<Profiler> profiler,
+            boolean bl1,
+            boolean bl2,
+            long l
     ) {
-        super(properties, registryManager, registryEntry, profiler, isClient, debugWorld, seed);
+        super(mutableWorldProperties, registryKey, registryKey2, dimensionType, profiler, bl1, bl2, l);
     }
 
     /**
      * @author hugeblank
      * @reason Smooth out daylight cycle & remove client de-sync jitter.
      */
+    @Shadow
     @Overwrite
     private void tickTime() {
         remainder += factor; // add remainder to factor
@@ -51,6 +52,8 @@ public abstract class ClientWorldMixin extends World implements TimeSmoother {
         // subtract the incremented integer, preserving the floating point remainder for later
         remainder -= increment;
     }
+
+    @Shadow public abstract void setTimeOfDay(long l);
 
     @Override
     public void asahi$updateTimes(WorldTimeUpdateS2CPacket packet) {
